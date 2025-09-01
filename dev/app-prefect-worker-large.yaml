@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prefect-worker-large
+  namespace: argocd
+spec:
+  project: data-platform
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prefect
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://prefecthq.github.io/prefect-helm
+    chart: prefect-worker
+    targetRevision: ">=2025.8.0"
+    helm:
+      values: |
+        namespaceOverride: prefect
+        prefectApiUrl: "http://prefect-server-api.prefect.svc.cluster.local/api"
+        workPool:
+          name: k8s-large
+        job:
+          podTemplate:
+            template:
+              spec:
+                containers:
+                  - name: prefect-worker
+                    resources:
+                      requests:
+                        cpu: "4"
+                        memory: 8Gi
+                      limits:
+                        cpu: "8"
+                        memory: 16Gi
+        replicaCount: 1

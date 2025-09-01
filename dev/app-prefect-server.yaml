@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+name: prefect-server
+namespace: argocd
+spec:
+project: data-platform
+destination:
+server: https://kubernetes.default.svc
+namespace: prefect
+syncPolicy:
+automated:
+prune: true
+selfHeal: true
+syncOptions:
+- CreateNamespace=true
+source:
+repoURL: https://prefecthq.github.io/prefect-helm
+chart: prefect-server
+targetRevision: ">=2025.8.0"
+helm:
+values: |
+namespaceOverride: prefect
+postgresql:
+enabled: true
+primary:
+persistence:
+enabled: false
+ingress:
+enabled: false
+prefectServer:
+api:
+replicaCount: 1
+ui:
+replicaCount: 1
