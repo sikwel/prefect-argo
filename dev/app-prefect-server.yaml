@@ -12,7 +12,7 @@ spec:
     targetRevision: ">=2025.8.0"
     helm:
       values: |
-        namespaceOverride: prefect
+        namespaceOverride: default
         postgresql:
           enabled: true
           primary:
