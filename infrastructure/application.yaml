@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/sikwel/prefect-argo.git
     targetRevision: HEAD
-    path: dev
+    path: infrastructure/dev
     directory:
       recurse: true
   destination: 
