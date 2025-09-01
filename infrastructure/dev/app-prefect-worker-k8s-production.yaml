@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prefect-worker-small
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://prefecthq.github.io/prefect-helm
+    chart: prefect-worker
+    targetRevision: ">=2025.8.0"
+    helm:
+      values: |
+        namespaceOverride: prefect
+
+        nameOverride: prefect-worker-k8s-production
+        fullnameOverride: prefect-worker-k8s-production
+        serviceAccount:
+          create: true
+          name: prefect-worker-k8s-production
+        rbac:
+          create: true
+          # (Chart leitet i. d. R. die Role/RoleBinding-Namen vom fullname ab)
+
+        worker:
+          apiConfig: selfHostedServer
+          config:
+            workPool: k8s-production
+          selfHostedServerApiConfig:
+            apiUrl: http://prefect-server.prefect.svc.cluster.local:4200/api
+
+        replicaCount: 1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prefect
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      prune: true
+      selfHeal: true
