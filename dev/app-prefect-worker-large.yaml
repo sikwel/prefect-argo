@@ -13,22 +13,12 @@ spec:
     helm:
       values: |
         namespaceOverride: prefect
-        prefectApiUrl: "http://prefect-server-api.prefect.svc.cluster.local/api"
-        workPool:
-          name: k8s-large
-        job:
-          podTemplate:
-            template:
-              spec:
-                containers:
-                  - name: prefect-worker
-                    resources:
-                      requests:
-                        cpu: "4"
-                        memory: 8Gi
-                      limits:
-                        cpu: "8"
-                        memory: 16Gi
+        worker:
+          apiConfig: selfHostedServer
+          config:
+            workPool: k8s-large
+          selfHostedServerApiConfig:
+            apiUrl: http://prefect-server.prefect.svc.cluster.local:4200/api
         replicaCount: 1
   destination:
     server: https://kubernetes.default.svc
