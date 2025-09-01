@@ -4,7 +4,7 @@ metadata:
   name: prefect-worker-small
   namespace: argocd
 spec:
-  project: prefect
+  project: default
 
   source:
     repoURL: https://prefecthq.github.io/prefect-helm
