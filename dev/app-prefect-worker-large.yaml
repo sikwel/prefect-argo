@@ -4,14 +4,8 @@ metadata:
   name: prefect-worker-large
   namespace: argocd
 spec:
-  project: data-platform
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: prefect
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  project: default
+
   source:
     repoURL: https://prefecthq.github.io/prefect-helm
     chart: prefect-worker
@@ -36,3 +30,14 @@ spec:
                         cpu: "8"
                         memory: 16Gi
         replicaCount: 1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prefect
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      prune: true
+      selfHeal: true
