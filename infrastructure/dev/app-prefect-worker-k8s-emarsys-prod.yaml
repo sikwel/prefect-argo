@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prefect-worker-small
+  name: prefect-worker-k8s-emarsys-prod
   namespace: argocd
 spec:
   project: default
