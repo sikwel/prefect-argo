@@ -13,12 +13,23 @@ spec:
     helm:
       values: |
         namespaceOverride: prefect
+
+        nameOverride: prefect-worker-small
+        fullnameOverride: prefect-worker-small
+        serviceAccount:
+          create: true
+          name: prefect-worker-small
+        rbac:
+          create: true
+          # (Chart leitet i. d. R. die Role/RoleBinding-Namen vom fullname ab)
+
         worker:
           apiConfig: selfHostedServer
           config:
             workPool: k8s-small
           selfHostedServerApiConfig:
             apiUrl: http://prefect-server.prefect.svc.cluster.local:4200/api
+
         replicaCount: 1
   destination:
     server: https://kubernetes.default.svc

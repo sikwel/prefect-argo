@@ -13,12 +13,23 @@ spec:
     helm:
       values: |
         namespaceOverride: prefect
+
+        # eindeutige Namen
+        nameOverride: prefect-worker-large
+        fullnameOverride: prefect-worker-large
+        serviceAccount:
+          create: true
+          name: prefect-worker-large
+        rbac:
+          create: true
+
         worker:
           apiConfig: selfHostedServer
           config:
             workPool: k8s-large
           selfHostedServerApiConfig:
             apiUrl: http://prefect-server.prefect.svc.cluster.local:4200/api
+
         replicaCount: 1
   destination:
     server: https://kubernetes.default.svc
